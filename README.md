@@ -1,4 +1,4 @@
-# Apline-on-quay
+# Alpine-on-quay
 This is an github action which pulls latest alpine,ruby and python docker images and push to my quay.io repository. 
 
 ## Docker repos:
