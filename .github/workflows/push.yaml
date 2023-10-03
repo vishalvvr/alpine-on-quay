@@ -1,0 +1,31 @@
+name: pull & push alpine images to quay
+
+on:
+  # Runs on pushes targeting the default branch
+  push:
+    branches: ["main"]
+  
+  workflow_dispatch:
+
+jobs:
+  pull-alpine-images:
+    runs-on: ubuntu-latest
+    steps:  
+      - name: install podman
+        uses: gacts/install-podman@v1
+      - shell: bash
+        env:
+          QUAY_USERNAME: ${{ secrets.QUAY_USERNAME }}
+          QUAY_PASSWORD: ${{ secrets.QUAY_PASSWORD }}
+        run: |
+          podman login -u="$QUAY_USERNAME" -p="$QUAY_PASSWORD" quay.io
+          podman pull alpine
+          podman tag alpine alpine
+          podman pull python:alpine
+          podman tag python:alpine python-alpine
+          podman pull ruby:alpine
+          podman tag ruby:alpine ruby-alpine
+          podman images
+          podman push alpine quay.io/vvijayra/alpine
+          podman push python-alpine quay.io/vvijayra/python-alpine
+          podman push ruby-alpine quay.io/vvijayra/ruby-alpine
