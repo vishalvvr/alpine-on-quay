@@ -2,8 +2,8 @@ name: pull & push alpine images to quay
 
 on:
   # Runs on pushes targeting the default branch
-  push:
-    branches: ["main"]
+  # push:
+  #   branches: ["main"]
   
   workflow_dispatch:
 

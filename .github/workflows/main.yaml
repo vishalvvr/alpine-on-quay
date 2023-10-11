@@ -1,0 +1,21 @@
+name: pull & push alpine images to quay
+
+on:  
+  workflow_dispatch:
+
+jobs:
+  pull-alpine-images:
+    runs-on: ubuntu-latest
+    steps:  
+      - name: install skopeo
+        run: sudo apt-get -y install skopeo
+      - name: skopeo login and copy image
+        shell: bash
+        env:
+          QUAY_USERNAME: ${{ secrets.QUAY_USERNAME }}
+          QUAY_PASSWORD: ${{ secrets.QUAY_PASSWORD }}
+        run: |
+          skopeo login -u="$QUAY_USERNAME" -p="$QUAY_PASSWORD" quay.io
+          skopeo copy docker://registry.hub.docker.com/library/alpine docker://quay.io/vvijayra/alpine
+          skopeo copy docker://registry.hub.docker.com/library/python:alpine docker://quay.io/vvijayra/python-alpine
+          skopeo copy docker://registry.hub.docker.com/library/ruby:alpine docker://quay.io/vvijayra/ruby-alpine
